@@ -16,15 +16,23 @@ function smsProvidersConfigured(): boolean {
 }
 
 /**
- * True only when neither SMS provider is configured and this isn't a
- * production environment — the single condition gating every dev-only OTP
- * shortcut (fixed code, console-logged delivery). Both `otp.ts` and this
- * file check the same function, so they can never disagree, and the
- * bypass stops applying the moment real credentials are added above —
- * nothing to remember to revert.
+ * True only when neither SMS provider is configured AND either this isn't a
+ * production environment, or ALLOW_OTP_DEV_BYPASS is explicitly set to
+ * "true" — the single condition gating every dev-only OTP shortcut (fixed
+ * code, console-logged delivery). Both `otp.ts` and this file check the
+ * same function, so they can never disagree, and the bypass stops applying
+ * the moment real credentials are added above — nothing to remember to
+ * revert there.
+ *
+ * ALLOW_OTP_DEV_BYPASS exists for a deployed-but-pre-Stage-7 environment
+ * (CLAUDE.md: "internal testing only" until Stage 7 is approved) where no
+ * SMS provider is set up yet. It must be removed before real users are
+ * invited — leaving it set in a real production environment means every
+ * phone number's OTP is the same fixed, logged code.
  */
 export function isOtpDevBypassActive(): boolean {
-  return process.env.NODE_ENV !== 'production' && !smsProvidersConfigured()
+  const allowedInProduction = process.env.ALLOW_OTP_DEV_BYPASS === 'true'
+  return (process.env.NODE_ENV !== 'production' || allowedInProduction) && !smsProvidersConfigured()
 }
 
 function twilioMessagesUrl(accountSid: string): string {
