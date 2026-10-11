@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { AlertTriangle } from 'lucide-react'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 
 export default function LetterDraftPage() {
   const params = useParams<{ policyId: string }>()
@@ -76,31 +77,36 @@ export default function LetterDraftPage() {
 
   if (letterText !== null) {
     return (
-      <main className="page page-scroll">
-        <h1 className="headline">Your draft letter</h1>
-        <p className="body-text">
-          Review this draft carefully. You send it yourself — InsuranceIQ never sends anything on your behalf.
-        </p>
-        <textarea
-          className="letter-draft-editor"
-          value={letterText}
-          onChange={(event) => setLetterText(event.target.value)}
-          rows={18}
-        />
-        <div className="letter-draft-actions">
-          <button type="button" className="btn-secondary" onClick={handleCopy}>
-            Copy
-          </button>
-          <button type="button" className="btn-secondary" onClick={handleDownload}>
-            Download
-          </button>
-        </div>
-      </main>
+      <>
+        <AppToolbar title="Your draft letter" onBack={() => setLetterText(null)} />
+        <main className="page page-scroll">
+          <h1 className="headline">Your draft letter</h1>
+          <p className="body-text">
+            Review this draft carefully. You send it yourself — InsuranceIQ never sends anything on your behalf.
+          </p>
+          <textarea
+            className="letter-draft-editor"
+            value={letterText}
+            onChange={(event) => setLetterText(event.target.value)}
+            rows={18}
+          />
+          <div className="letter-draft-actions">
+            <button type="button" className="btn-secondary" onClick={handleCopy}>
+              Copy
+            </button>
+            <button type="button" className="btn-secondary" onClick={handleDownload}>
+              Download
+            </button>
+          </div>
+        </main>
+      </>
     )
   }
 
   return (
-    <main className="page page-scroll">
+    <>
+      <AppToolbar title="Draft a grievance letter" />
+      <main className="page page-scroll">
       <h1 className="headline">Draft a grievance letter</h1>
 
       <div className="form-stack">
@@ -200,6 +206,7 @@ export default function LetterDraftPage() {
           {isSubmitting ? 'Drafting…' : 'Draft letter'}
         </button>
       </div>
-    </main>
+      </main>
+    </>
   )
 }

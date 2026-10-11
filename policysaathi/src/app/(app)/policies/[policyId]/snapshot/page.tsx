@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react'
 import { SnapshotTermCard, type SnapshotTermData } from '@/components/snapshot/SnapshotTermCard'
 import { SNAPSHOT_GROUPS } from '@/lib/snapshot-terms'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 
 const TOTAL_TERMS = SNAPSHOT_GROUPS.reduce((count, group) => count + group.termKeys.length, 0)
 
@@ -80,7 +81,9 @@ export default function SnapshotPage() {
   const termsByKey = new Map(terms.map((term) => [term.term, term]))
 
   return (
-    <main className="page page-scroll">
+    <>
+      <AppToolbar title="Your policy at a glance" />
+      <main className="page page-scroll">
       <h1 className="headline">Your policy at a glance</h1>
       <p className="disclaimer">
         InsuranceIQ explains your policy documents. It is not your insurer, and this is not legal, medical or
@@ -156,6 +159,7 @@ export default function SnapshotPage() {
           </a>
         </div>
       ) : null}
-    </main>
+      </main>
+    </>
   )
 }

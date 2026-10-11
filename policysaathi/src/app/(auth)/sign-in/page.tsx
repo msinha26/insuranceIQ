@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { PhoneInput } from '@/components/shared/PhoneInput'
 import { OtpInput } from '@/components/shared/OtpInput'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 import en from '@/lib/i18n/en.json'
 
 const RESEND_COOLDOWN_SECONDS = 30
@@ -98,7 +99,12 @@ export default function SignInPage() {
   const errorMessage = errorMessageFor(errorCode)
 
   return (
-    <main className="page">
+    <>
+      <AppToolbar
+        title={en.signIn.title}
+        onBack={step === 'otp' ? () => setStep('phone') : undefined}
+      />
+      <main className="page">
       <h1 className="headline">{en.signIn.title}</h1>
 
       <div className="form-card">
@@ -133,6 +139,7 @@ export default function SignInPage() {
           </form>
         )}
       </div>
-    </main>
+      </main>
+    </>
   )
 }

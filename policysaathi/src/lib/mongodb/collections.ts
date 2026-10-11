@@ -155,11 +155,16 @@ export interface BoundingBox {
 
 export interface SnapshotTermDoc {
   _id: ObjectId
-  policy_id: ObjectId
+  // String, not ObjectId — this collection is written by n8n's MongoDB
+  // node, which does not cast string field values to ObjectId (confirmed
+  // empirically: the same mismatch broke documents/policies status writes
+  // until matched by a plain string id field). The app is the only reader,
+  // so there is no benefit to ObjectId here and real risk in it.
+  policy_id: string
   // Which of the policy's up-to-3 documents this term came from — page
   // numbers are only unique within a single document, not across a policy,
   // so the viewer needs this to open the right file.
-  document_id: ObjectId | null
+  document_id: string | null
   term: string
   value: string | null
   page_number: number | null

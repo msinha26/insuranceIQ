@@ -49,7 +49,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     const snapshotTerms = await snapshotTermsCollection()
-    const existingTerm = await snapshotTerms.findOne({ policy_id: policyObjectId, term: parsed.data.term })
+    const existingTerm = await snapshotTerms.findOne({ policy_id: params.id, term: parsed.data.term })
 
     const corrections = await snapshotCorrectionsCollection()
     await corrections.insertOne({

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { AlertTriangle } from 'lucide-react'
 import { DropZone } from '@/components/upload/DropZone'
 import { DocumentStatusList, type DocumentStatusItem } from '@/components/upload/DocumentStatusList'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 
 const POLICY_TYPES = [
   { value: 'individual', label: 'Individual' },
@@ -139,7 +140,9 @@ export default function UploadPage() {
   }
 
   return (
-    <main className="page page-scroll upload-page">
+    <>
+      <AppToolbar title="Upload your policy" />
+      <main className="page page-scroll upload-page">
       <div className="upload-header">
         <h1 className="headline">Upload your policy</h1>
         <p className="body-text upload-subtitle">
@@ -235,6 +238,7 @@ export default function UploadPage() {
           </>
         )}
       </div>
-    </main>
+      </main>
+    </>
   )
 }

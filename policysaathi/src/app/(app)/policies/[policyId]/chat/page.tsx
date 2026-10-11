@@ -1,15 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { AlertTriangle, ArrowLeft, Send } from 'lucide-react'
+import { useParams, useSearchParams } from 'next/navigation'
+import { AlertTriangle, Send } from 'lucide-react'
 import { MessageBubble, type ChatMessageData } from '@/components/chat/MessageBubble'
 import { DisclaimerFooter } from '@/components/chat/DisclaimerFooter'
 import { EmergencyBanner } from '@/components/chat/EmergencyBanner'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 
 export default function ChatPage() {
   const params = useParams<{ policyId: string }>()
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessageData[]>([])
@@ -128,12 +128,7 @@ export default function ChatPage() {
 
   return (
     <main className="chat-page">
-      <header className="chat-toolbar">
-        <button type="button" className="chat-toolbar-back" onClick={() => router.back()} aria-label="Exit chat">
-          <ArrowLeft size={22} aria-hidden="true" />
-        </button>
-        <span className="chat-toolbar-title">Chat</span>
-      </header>
+      <AppToolbar title="Chat" />
 
       <div className="chat-messages">
         {messages.map((message) => (

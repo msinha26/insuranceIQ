@@ -863,7 +863,8 @@ body {
   color: var(--color-low);
 }
 
-.chat-toolbar {
+/* App bar — docs/design.md §5 "app bar (56px)" zone, shared by every screen */
+.app-toolbar {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -874,7 +875,7 @@ body {
   border-bottom: 1px solid var(--color-border);
 }
 
-.chat-toolbar-back {
+.app-toolbar-back {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -886,15 +887,15 @@ body {
   color: var(--color-text);
   flex-shrink: 0;
 }
-.chat-toolbar-back:hover {
+.app-toolbar-back:hover {
   background: var(--color-surface-sunken);
 }
-.chat-toolbar-back:focus-visible {
+.app-toolbar-back:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-.chat-toolbar-title {
+.app-toolbar-title {
   font: var(--text-body-strong);
   color: var(--color-text);
 }

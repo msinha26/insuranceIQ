@@ -34,13 +34,13 @@ export async function GET(_request: Request, { params }: { params: { id: string 
     }
 
     const snapshotTerms = await snapshotTermsCollection()
-    const terms = await snapshotTerms.find({ policy_id: policyObjectId }).toArray()
+    const terms = await snapshotTerms.find({ policy_id: params.id }).toArray()
 
     return NextResponse.json({
       terms: terms.map((term) => ({
         term: term.term,
         value: term.value,
-        document_id: term.document_id ? term.document_id.toHexString() : null,
+        document_id: term.document_id,
         page_number: term.page_number,
         line_number: term.line_number,
         bounding_box: term.bounding_box,

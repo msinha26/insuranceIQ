@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle } from 'lucide-react'
 import en from '@/lib/i18n/en.json'
+import { AppToolbar } from '@/components/shared/AppToolbar'
 
 type ErrorCode = keyof typeof en.consent.errors
 
@@ -59,34 +60,37 @@ export default function ConsentPage() {
   const errorMessage = errorMessageFor(errorCode)
 
   return (
-    <main className="page">
-      <h1 className="headline">{en.consent.title}</h1>
-      <p className="body-text">{en.consent.body}</p>
+    <>
+      <AppToolbar title={en.consent.title} />
+      <main className="page">
+        <h1 className="headline">{en.consent.title}</h1>
+        <p className="body-text">{en.consent.body}</p>
 
-      <label className="checkbox-row">
-        <input
-          type="checkbox"
-          checked={ageConfirmed}
-          onChange={(event) => setAgeConfirmed(event.target.checked)}
-        />
-        <span>{en.consent.ageConfirm}</span>
-      </label>
+        <label className="checkbox-row">
+          <input
+            type="checkbox"
+            checked={ageConfirmed}
+            onChange={(event) => setAgeConfirmed(event.target.checked)}
+          />
+          <span>{en.consent.ageConfirm}</span>
+        </label>
 
-      {errorMessage ? (
-        <p className="field-error" role="alert">
-          <AlertTriangle size={16} aria-hidden="true" />
-          <span>{errorMessage}</span>
-        </p>
-      ) : null}
+        {errorMessage ? (
+          <p className="field-error" role="alert">
+            <AlertTriangle size={16} aria-hidden="true" />
+            <span>{errorMessage}</span>
+          </p>
+        ) : null}
 
-      <button
-        type="button"
-        className="btn-primary"
-        disabled={isSubmitting || !ageConfirmed || !version}
-        onClick={handleAccept}
-      >
-        {isSubmitting ? en.consent.saving : en.consent.accept}
-      </button>
-    </main>
+        <button
+          type="button"
+          className="btn-primary"
+          disabled={isSubmitting || !ageConfirmed || !version}
+          onClick={handleAccept}
+        >
+          {isSubmitting ? en.consent.saving : en.consent.accept}
+        </button>
+      </main>
+    </>
   )
 }
