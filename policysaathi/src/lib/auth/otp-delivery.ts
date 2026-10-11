@@ -99,7 +99,7 @@ async function sendViaTwilio(phone: string, code: string): Promise<void> {
  */
 export async function sendOtpSms(phone: string, code: string): Promise<void> {
   if (!smsProvidersConfigured()) {
-    if (process.env.NODE_ENV === 'production') {
+    if (!isOtpDevBypassActive()) {
       throw new Error('No SMS provider is configured')
     }
     // TEMPORARY DEV BYPASS — see isOtpDevBypassActive() above.
