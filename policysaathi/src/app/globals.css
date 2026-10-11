@@ -528,6 +528,29 @@ body {
   border-radius: var(--radius-md);
 }
 
+.snapshot-bubble-loader {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-pill);
+}
+.snapshot-bubble-loader span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+.snapshot-bubble-loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.snapshot-bubble-loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
 .snapshot-results-card {
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
@@ -632,13 +655,13 @@ body {
 
 .snapshot-card-value-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
 }
 
 .snapshot-card-value {
-  font: var(--text-title);
+  font: var(--text-body-strong);
   color: var(--color-text);
 }
 

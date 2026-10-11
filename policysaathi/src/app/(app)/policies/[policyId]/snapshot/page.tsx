@@ -114,7 +114,11 @@ export default function SnapshotPage() {
           <p className="body-text">
             Reading your policy… this can take up to a couple of minutes for longer documents.
           </p>
-          <div className="skeleton-block" />
+          <div className="snapshot-bubble-loader" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
           <div className="skeleton-block" />
           <div className="skeleton-block" />
         </div>
