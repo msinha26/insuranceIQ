@@ -25,6 +25,14 @@ function notFoundTerm(termKey: string): SnapshotTermData {
 
 type LoadState = 'loading' | 'not_ready' | 'ready' | 'error'
 
+// Snapshot term extraction runs as its own branch in n8n, independent of
+// (and sometimes slower than) the chunking/embedding path that flips
+// policies.status to "ready" — so the very first successful fetch can
+// legitimately race ahead of extraction finishing and see zero terms.
+// Keep polling for a bit rather than settling on an empty result immediately.
+const EMPTY_RESULT_MAX_RETRIES = 8
+const EMPTY_RESULT_POLL_MS = 3000
+
 export default function SnapshotPage() {
   const params = useParams<{ policyId: string }>()
   const router = useRouter()
@@ -35,6 +43,7 @@ export default function SnapshotPage() {
   useEffect(() => {
     let cancelled = false
     let timer: ReturnType<typeof setTimeout>
+    let emptyResultAttempts = 0
 
     async function load() {
       try {
@@ -58,6 +67,14 @@ export default function SnapshotPage() {
         }
 
         const data: { terms: SnapshotTermData[] } = await response.json()
+
+        if (data.terms.length === 0 && emptyResultAttempts < EMPTY_RESULT_MAX_RETRIES) {
+          emptyResultAttempts += 1
+          setState('not_ready')
+          timer = setTimeout(load, EMPTY_RESULT_POLL_MS)
+          return
+        }
+
         setTerms(data.terms)
         setGroupIndex(0)
         setState('ready')
