@@ -1,5 +1,6 @@
 import { callN8nWebhook } from './client'
 import type { ChatRoute, Citation } from '@/lib/mongodb/collections'
+import type { SimilarQuestionPattern } from '@/lib/mongodb/feedback-insights'
 
 export interface RecentTurn {
   role: 'user' | 'assistant'
@@ -15,6 +16,11 @@ export interface AskPolicyPayload {
   // workflow was built from.
   message: string
   recent_turns: RecentTurn[]
+  // Textually similar past questions (across all users) that received a
+  // thumbs up/down — question text + rating only, never another user's
+  // actual answer. A soft signal for question interpretation/approach, not
+  // a source of facts about this user's policy (docs/specs/n8n-rag-workflow.md).
+  similar_past_questions: SimilarQuestionPattern[]
 }
 
 export type SourceLabel = 'from_policy' | 'playbook' | 'mixed' | 'none'

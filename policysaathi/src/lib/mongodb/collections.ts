@@ -266,6 +266,8 @@ export async function chatMessagesCollection(): Promise<Collection<ChatMessageDo
   const collection = db.collection<ChatMessageDoc>('chat_messages')
   if (!chatMessagesIndexesEnsured) {
     await collection.createIndex({ session_id: 1 })
+    // Powers findSimilarQuestionPatterns' cross-user lookup (src/lib/mongodb/feedback-insights.ts).
+    await collection.createIndex({ content: 'text' })
     chatMessagesIndexesEnsured = true
   }
   return collection

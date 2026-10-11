@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
       policy_id: policyObjectId.toHexString(),
       message: question,
       recent_turns: [],
+      similar_past_questions: [],
     })
 
     return NextResponse.json({ letter_text: answer.answer })

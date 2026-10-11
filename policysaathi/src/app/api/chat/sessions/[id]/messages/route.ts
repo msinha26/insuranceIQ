@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb'
 import { getSession } from '@/lib/auth/session'
 import { chatMessageSchema } from '@/lib/security/validate'
 import { chatSessionsCollection, chatMessagesCollection, policiesCollection } from '@/lib/mongodb/collections'
+import { findSimilarQuestionPatterns } from '@/lib/mongodb/feedback-insights'
 import { withUserFilter } from '@/lib/security/tenant-filter'
 import { askPolicy, type RecentTurn } from '@/lib/n8n/retrieval'
 import { logError } from '@/lib/security/sanitize-log'
@@ -113,11 +114,18 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       .reverse()
       .map((message) => ({ role: message.role, content: message.content }))
 
+    // Best-effort — a lookup failure should never block the chat turn itself.
+    const similarPastQuestions = await findSimilarQuestionPatterns(parsed.data.message).catch((error) => {
+      logError('chat.messages.similar_question_lookup', error)
+      return []
+    })
+
     const answer = await askPolicy({
       user_id: session.user_id,
       policy_id: chatSession.policy_id.toHexString(),
       message: parsed.data.message,
       recent_turns: recentTurns,
+      similar_past_questions: similarPastQuestions,
     })
 
     const assistantMessageId = new ObjectId()
