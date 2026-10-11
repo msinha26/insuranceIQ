@@ -88,7 +88,7 @@ export default function SignInPage() {
         setErrorCode(data.code ?? 'invalid_code')
         return
       }
-      router.push(data.is_new_user ? '/consent' : '/upload')
+      router.push('/upload')
     } catch {
       setErrorCode('internal_error')
     } finally {

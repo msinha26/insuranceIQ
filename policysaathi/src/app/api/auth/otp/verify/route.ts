@@ -40,23 +40,19 @@ export async function POST(request: NextRequest) {
   }
 
   let userId: string
-  let isNewUser: boolean
   try {
     const users = await usersCollection()
     const existingUser = await users.findOne({ phone })
 
     if (existingUser) {
       userId = existingUser._id.toHexString()
-      isNewUser = false
     } else {
       const insertResult = await users.insertOne({
         _id: new ObjectId(),
         phone,
-        age_confirmed_18_plus: false,
         created_at: new Date(),
       })
       userId = insertResult.insertedId.toHexString()
-      isNewUser = true
     }
   } catch (error) {
     logError('otp.verify.user', error)
@@ -65,7 +61,7 @@ export async function POST(request: NextRequest) {
 
   const token = await createSessionToken({ user_id: userId, phone })
 
-  const response = NextResponse.json({ session: true, is_new_user: isNewUser })
+  const response = NextResponse.json({ session: true })
   response.cookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

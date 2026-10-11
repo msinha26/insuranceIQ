@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifySessionToken, SESSION_COOKIE_NAME } from '@/lib/auth/session'
 
 // The landing page and sign-in flow are the only pages reachable without a
-// session. Everything else — including /consent, which only makes sense
-// for a signed-in user — requires one.
+// session. Everything else requires one.
 const PUBLIC_PATHS = new Set(['/', '/sign-in'])
 
 export async function middleware(request: NextRequest) {

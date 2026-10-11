@@ -1,9 +1,5 @@
 import { z } from 'zod'
 
-// Bumping this invalidates every existing consents document at the old
-// version — docs/specs/consent-capture.md's "version bump" behavior.
-export const CURRENT_CONSENT_VERSION = '2026-10-11-v1'
-
 export const phoneSchema = z
   .string()
   .regex(/^\+91[6-9]\d{9}$/, 'Enter a valid Indian phone number.')
@@ -15,11 +11,6 @@ export const otpSendSchema = z.object({
 export const otpVerifySchema = z.object({
   phone: phoneSchema,
   code: z.string().regex(/^\d{6}$/, 'Enter the 6-digit code.'),
-})
-
-export const consentSchema = z.object({
-  version: z.string().min(1),
-  age_confirmed: z.boolean(),
 })
 
 // ---------------------------------------------------------------------------

@@ -7,7 +7,6 @@ import { getDb } from './client'
 export interface UserDoc {
   _id: ObjectId
   phone: string
-  age_confirmed_18_plus: boolean
   created_at: Date
 }
 
@@ -42,28 +41,6 @@ export async function otpCodesCollection(): Promise<Collection<OtpCodeDoc>> {
     await collection.createIndex({ phone: 1 })
     await collection.createIndex({ expires_at: 1 }, { expireAfterSeconds: 0 })
     otpCodesIndexesEnsured = true
-  }
-  return collection
-}
-
-// ---------------------------------------------------------------------------
-// consents
-// ---------------------------------------------------------------------------
-export interface ConsentDoc {
-  _id: ObjectId
-  user_id: ObjectId
-  version: string
-  accepted_at: Date
-}
-
-let consentsIndexesEnsured = false
-
-export async function consentsCollection(): Promise<Collection<ConsentDoc>> {
-  const db = await getDb()
-  const collection = db.collection<ConsentDoc>('consents')
-  if (!consentsIndexesEnsured) {
-    await collection.createIndex({ user_id: 1, version: 1 })
-    consentsIndexesEnsured = true
   }
   return collection
 }

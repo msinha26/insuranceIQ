@@ -8,9 +8,8 @@ import {
   MAX_POLICY_PAGE_COUNT,
   MAX_DOCUMENTS_PER_POLICY,
   mimeTypeToFileType,
-  CURRENT_CONSENT_VERSION,
 } from '@/lib/security/validate'
-import { consentsCollection, policiesCollection, documentsCollection } from '@/lib/mongodb/collections'
+import { policiesCollection, documentsCollection } from '@/lib/mongodb/collections'
 import { withUserFilter } from '@/lib/security/tenant-filter'
 import { uploadFileToGridFs } from '@/lib/gridfs/upload'
 import { triggerIngestion } from '@/lib/n8n/ingestion'
@@ -23,20 +22,6 @@ export async function POST(request: NextRequest) {
   }
 
   const userId = new ObjectId(session.user_id)
-
-  try {
-    const consents = await consentsCollection()
-    const hasConsent = await consents.findOne({ user_id: userId, version: CURRENT_CONSENT_VERSION })
-    if (!hasConsent) {
-      return NextResponse.json(
-        { code: 'consent_required', message: 'Please review and accept the consent screen first.' },
-        { status: 403 }
-      )
-    }
-  } catch (error) {
-    logError('policies.upload.consent_check', error)
-    return NextResponse.json({ code: 'internal_error', message: 'Something went wrong. Try again.' }, { status: 500 })
-  }
 
   let formData: FormData
   try {
