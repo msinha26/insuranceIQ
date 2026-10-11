@@ -1,0 +1,35 @@
+{
+  "signIn": {
+    "title": "Check my policy",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "98765 43210",
+    "sendCode": "Send code",
+    "sending": "Sending…",
+    "otpLabel": "Enter the 6-digit code",
+    "resend": "Resend code",
+    "resendIn": "Resend in {seconds}s",
+    "verify": "Verify and continue",
+    "verifying": "Verifying…",
+    "errors": {
+      "invalid_phone": "Enter a valid 10-digit mobile number.",
+      "rate_limited": "Please wait before requesting another code.",
+      "delivery_failed": "Could not send the code. Please try again.",
+      "invalid_code": "That code is incorrect.",
+      "code_expired": "That code has expired. Request a new one.",
+      "internal_error": "Something went wrong. Please try again."
+    }
+  },
+  "consent": {
+    "title": "Before you upload",
+    "body": "PolicySaathi stores your uploaded policy, the questions you ask, and the answers you get, so you can come back to them. Your documents are never used to train any AI model. You can delete everything at any time from your account.",
+    "ageConfirm": "I confirm I am 18 years of age or older.",
+    "accept": "I agree, continue",
+    "saving": "Saving…",
+    "errors": {
+      "unauthorized": "Please sign in again.",
+      "version_mismatch": "This consent text has been updated. Please reload and try again.",
+      "age_required": "You must confirm you are 18 or older.",
+      "internal_error": "Could not record consent. Try again."
+    }
+  }
+}
