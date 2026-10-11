@@ -440,7 +440,6 @@ RESPONSE FORMAT:
 - Time Limit: [from Snowflake]
 - Where To File: [from Snowflake]
 - Source: [source_link from Snowflake]
-- Reference: [Playbook: entry_id]
 
 IF THE TOPIC IS A REJECTED OR PARTLY PAID CLAIM ADD THIS:
 - NEXT STEP: Ask the insurer for the rejection or deduction reason in writing, with the policy clause they relied on.
