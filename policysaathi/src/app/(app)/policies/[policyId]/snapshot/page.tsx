@@ -26,12 +26,14 @@ function notFoundTerm(termKey: string): SnapshotTermData {
 type LoadState = 'loading' | 'not_ready' | 'ready' | 'error'
 
 // Snapshot term extraction runs as its own branch in n8n, independent of
-// (and sometimes slower than) the chunking/embedding path that flips
+// (and sometimes much slower than) the chunking/embedding path that flips
 // policies.status to "ready" — so the very first successful fetch can
-// legitimately race ahead of extraction finishing and see zero terms.
-// Keep polling for a bit rather than settling on an empty result immediately.
-const EMPTY_RESULT_MAX_RETRIES = 8
-const EMPTY_RESULT_POLL_MS = 3000
+// legitimately race ahead of extraction finishing and see zero terms. A
+// single LLM call over a real, large policy (40+ pages) can take well over
+// a minute; keep polling generously rather than settling on an empty
+// result too early.
+const EMPTY_RESULT_MAX_RETRIES = 24
+const EMPTY_RESULT_POLL_MS = 4000
 
 export default function SnapshotPage() {
   const params = useParams<{ policyId: string }>()
@@ -109,7 +111,9 @@ export default function SnapshotPage() {
 
       {state === 'loading' || state === 'not_ready' ? (
         <div className="snapshot-skeleton" aria-live="polite">
-          <p className="body-text">Reading your policy… this can take up to 45 seconds.</p>
+          <p className="body-text">
+            Reading your policy… this can take up to a couple of minutes for longer documents.
+          </p>
           <div className="skeleton-block" />
           <div className="skeleton-block" />
           <div className="skeleton-block" />
